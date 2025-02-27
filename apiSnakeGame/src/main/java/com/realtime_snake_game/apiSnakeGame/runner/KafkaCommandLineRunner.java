@@ -7,11 +7,17 @@ import java.util.Scanner;
 
 @Component
 public class KafkaCommandLineRunner implements CommandLineRunner {
-
     private final KafkaProducerService kafkaProducerService;
+    private final Map<Character, String> keyDirections = new HashMap<>();
 
     public KafkaCommandLineRunner(KafkaProducerService kafkaProducerService) {
         this.kafkaProducerService = kafkaProducerService;
+        
+        // Initialize key mappings
+        keyDirections.put('w', "UP");
+        keyDirections.put('a', "LEFT");
+        keyDirections.put('s', "DOWN");
+        keyDirections.put('d', "RIGHT");
     }
 
     @Override
@@ -21,22 +27,16 @@ public class KafkaCommandLineRunner implements CommandLineRunner {
 
         while (true) {
             char key = (char) System.in.read();
-            if ("q".equalsIgnoreCase(Character.toString(key))) {
+            
+            if ('q' == key) {
                 break;
             }
-            if (key == 'a'){
-                kafkaProducerService.sendMessage("LEFT");
+            
+            String direction = keyDirections.get(key);
+            if (direction != null) {
+                kafkaProducerService.sendMessage(direction);
+                System.out.println("Message sent: " + key + " -> " + direction);
             }
-            if (key == 'd'){
-                kafkaProducerService.sendMessage("RIGHT");
-            }
-            if (key == 's'){
-                kafkaProducerService.sendMessage("DOWN");
-            }
-            if (key == 'w'){
-                kafkaProducerService.sendMessage("UP");
-            }
-            System.out.println("Message sent: " + key);
         }
 
         scanner.close();
