@@ -3,6 +3,9 @@ import com.realtime_snake_game.apiSnakeGame.service.kafka.KafkaProducerService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 @Component
